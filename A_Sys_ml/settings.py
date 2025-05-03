@@ -76,6 +76,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'A_Sys_ml.wsgi.application'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://ai-proj-1.onrender.com',
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
