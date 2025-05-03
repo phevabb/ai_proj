@@ -1,0 +1,418 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Student Performance Predictor | AI Analysis Tool</title>
+
+    <!-- Favicon from web -->
+    <link rel="icon" href="https://img.icons8.com/fluency/48/000000/student-center.png" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header h1 i {
+            font-size: 1.2em;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .model-selector {
+            margin-bottom: 30px;
+        }
+
+        .model-selector h2 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .model-selector h2 i {
+            color: var(--primary);
+        }
+
+        .model-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .model-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .model-option {
+            background-color: var(--light);
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .model-option:hover {
+            border-color: var(--accent);
+        }
+
+        .model-option.active {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        .model-option .icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(67, 97, 238, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+
+        .model-option.active .icon {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .model-option .info h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .model-option .info p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .input-form h2 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-form h2 i {
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group label i {
+            color: var(--accent);
+            font-size: 0.9em;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .submit-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(72, 149, 239, 0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .performance-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--secondary);
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .performance-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .performance-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--success), var(--accent));
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hide the default model choice dropdown */
+        #id_model_choice {
+            display: none;
+        }
+
+        /* Error styling */
+        .errorlist {
+            color: #dc3545;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .error-message {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Student Performance Predictor</h1>
+            <p>Select a model and enter your details to predict your performance index</p>
+        </div>
+
+        <div class="content">
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    <div class="error-message">
+                        Please correct the errors below.
+                    </div>
+                {% endif %}
+
+                <!-- Hidden field for model choice -->
+                <input type="hidden" name="model_choice" id="model_choice_field" value="{{ form.model_choice.value|default:'random_forest' }}">
+
+                <div class="model-selector">
+                    <h2>Select Prediction Model</h2>
+                    <div class="model-options">
+                        <div class="model-option {% if form.model_choice.value == 'random_forest' or not form.model_choice.value %}active{% endif %}" data-model="random_forest">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="4" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            </div>
+                            <div class="info">
+                                <h3>Random Forest</h3>
+                                <p>Ensemble of decision trees</p>
+                            </div>
+                        </div>
+
+                        <div class="model-option {% if form.model_choice.value == 'svm' %}active{% endif %}" data-model="svm">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M8 14v1"/><path d="M12 14v3"/><path d="M16 14v1"/></svg>
+                            </div>
+                            <div class="info">
+                                <h3>Support Vector Machine</h3>
+                                <p>Powerful for classification</p>
+                            </div>
+                        </div>
+
+                        <div class="model-option {% if form.model_choice.value == 'linear' %}active{% endif %}" data-model="linear">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M19 9l-3 3-3-3-3 3-3-3"/></svg>
+                            </div>
+                            <div class="info">
+                                <h3>Linear Regression</h3>
+                                <p>Simple but effective</p>
+                            </div>
+                        </div>
+
+                        <div class="model-option {% if form.model_choice.value == 'decision_tree' %}active{% endif %}" data-model="decision_tree">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9 9 0 0 0-9 9 9 9 0 0 0 9 9 9 9 0 0 0 9-9z"/><path d="M12 3v18"/></svg>
+                            </div>
+                            <div class="info">
+                                <h3>Decision Tree</h3>
+                                <p>Easy to interpret</p>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form.model_choice.errors }}
+                </div>
+
+                <div class="input-form">
+                    <h2>Enter Student Details</h2>
+
+                    <div class="form-group">
+                        <label for="{{ form.hours_studied.id_for_label }}">Hours Studied (per day)</label>
+                        {% render_field form.hours_studied class="form-control" placeholder="e.g. 5" %}
+                        {{ form.hours_studied.errors }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.previous_scores.id_for_label }}">Previous Test Scores (%)</label>
+                        {% render_field form.previous_scores class="form-control" placeholder="e.g. 85" %}
+                        {{ form.previous_scores.errors }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.extracurricular_activities.id_for_label }}">Extracurricular Activities</label>
+                        {% render_field form.extracurricular_activities class="form-control" %}
+                        {{ form.extracurricular_activities.errors }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.sleep_hours.id_for_label }}">Sleep Hours (per night)</label>
+                        {% render_field form.sleep_hours class="form-control" placeholder="e.g. 7" %}
+                        {{ form.sleep_hours.errors }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.sample_question_papers_practiced.id_for_label }}">Sample Question Papers Practiced</label>
+                        {% render_field form.sample_question_papers_practiced class="form-control" placeholder="e.g. 10" %}
+                        {{ form.sample_question_papers_practiced.errors }}
+                    </div>
+
+                    <button type="submit" class="submit-btn">Predict Performance</button>
+                </div>
+            </form>
+
+            {% if prediction %}
+            <div class="result-container">
+                <h3>Predicted Performance Index</h3>
+                <div class="performance-value">{{ prediction }}</div>
+                <div class="performance-bar">
+                    <div class="performance-fill" style="width: {{ prediction }}%"></div>
+                </div>
+                <p>Predicted using {{ model_used }} model. Higher values indicate better expected performance.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Simple model selection
+        document.querySelectorAll('.model-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.model-option').forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                document.getElementById('model_choice_field').value = option.dataset.model;
+            });
+        });
+    </script>
+</body>
+</html>

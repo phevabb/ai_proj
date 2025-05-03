@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Student Performance Analyzer | Prediction Result</title>
+
+    <!-- Favicon from web -->
+    <link rel="icon" href="https://img.icons8.com/fluency/48/000000/student-center.png" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        h1 i {
+            font-size: 1.2em;
+        }
+
+        .performance-value {
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin: 30px 0;
+        }
+
+        .performance-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+
+        .performance-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--success), var(--accent));
+            width: {{ p_index|floatformat:"0" }}%;
+        }
+
+        .model-info {
+            background-color: rgba(67, 97, 238, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .model-info .icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: white;
+        }
+
+        .model-details {
+            text-align: left;
+        }
+
+        .model-details h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .model-details p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .btn-back {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-back:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Performance Prediction Result</h1>
+
+        <div class="model-info">
+            <div class="icon">
+                {% if model_used == "linear regression" %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M19 9l-3 3-3-3-3 3-3-3"/></svg>
+                {% elif model_used == "decision tree" %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9 9 0 0 0-9 9 9 9 0 0 0 9 9 9 9 0 0 0 9-9z"/><path d="M12 3v18"/></svg>
+                {% elif model_used == "random forest" %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="4" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                {% elif model_used == "support vector machine" %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M8 14v1"/><path d="M12 14v3"/><path d="M16 14v1"/></svg>
+                {% endif %}
+            </div>
+            <div class="model-details">
+                <h3>Predicted using {{ model_used|title }} Model</h3>
+                <p>
+                    {% if model_used == "linear" %}Simple but effective linear regression
+                    {% elif model_used == "decision_tree" %}Easy to interpret decision tree
+                    {% elif model_used == "random_forest" %}Ensemble of decision trees
+                    {% elif model_used == "svm" %}Powerful support vector machine
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <p>Your predicted performance index is:</p>
+        <div class="performance-value">{{ p_index|floatformat:"0" }}</div>
+
+        <div class="performance-bar">
+            <div class="performance-fill"></div>
+        </div>
+
+        <p>Higher values indicate better expected performance.</p>
+
+        <a href="{% url 'index' %}" class="btn-back">Make Another Prediction</a>
+    </div>
+</body>
+</html>
