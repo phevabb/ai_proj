@@ -171,14 +171,18 @@
             </div>
         </div>
 
-        <p>Your predicted performance index is:</p>
-        <div class="performance-value">{{ p_index|floatformat:"0" }}</div>
+       <p>Your predicted score for Test 3 is:</p>
+<div><strong>{{ actual_score_20|floatformat:"0" }} / 20</strong></div>
 
-        <div class="performance-bar">
-            <div class="performance-fill"></div>
-        </div>
+<p>This corresponds to approximately:</p>
 
-        <p>Higher values indicate better expected performance.</p>
+<div class="performance-value"><strong>{{ p_index|floatformat:"0" }}%</strong></div>
+
+<div class="performance-bar">
+    <div class="performance-fill"></div>
+</div>
+
+<p>Higher percentages indicate better expected performance.</p>
 
         <a href="{% url 'index' %}" class="btn-back">Make Another Prediction</a>
     </div>
