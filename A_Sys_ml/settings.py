@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-t@1w8%dpdp1!+4&hz(vl$kg6dnj2@-@ux_=an+prhk(@j@==$z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] 
 
 
 # Application definition
@@ -76,6 +76,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'A_Sys_ml.wsgi.application'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://ai-proj-1.onrender.com',
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
