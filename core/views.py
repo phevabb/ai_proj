@@ -23,38 +23,21 @@ def predict_performance(request):
             data = form.cleaned_data
 
             input_data = [[
-                data['activities'],
-                data['paid'],
-                int(data['sex']),
                 data['age'],
-                data['address'],
-                data['Medu'],
-                data['Fedu'],
-                data['studytime'],
-                data['failures'],
-                data['higher'],
-                data['internet'],
-                data['health'],
                 data['absences'],
-                data['G1'],
                 data['G2'],
             ]]
 
             selected_model = data['model_choice']
             if selected_model == 'linear':
-                student_data = pd.DataFrame(input_data, columns=['activities', 'paid','sex','age', 'address',
-                                                                 'Medu', 'Fedu', 'studytime', 'failures', 'higher', 'internet',
-                                                                 'health', 'absences', 'G1', 'G2'])
+                student_data = pd.DataFrame(input_data, columns=['age', 'absences', 'G2'])
                 prediction = model_lin.predict(student_data)[0]
                 actual_score_20 = prediction
                 prediction = (prediction / 20) * 100
                 return render(request, 'performance_index.html', {'actual_score_20':actual_score_20, 'p_index':prediction,'model_used': 'linear regression'})
 
             elif selected_model == 'decision_tree':
-                student_data = pd.DataFrame(input_data,
-                                            columns=['activities', 'paid', 'sex', 'age', 'address',
-                                                     'Medu', 'Fedu', 'studytime', 'failures', 'higher', 'internet',
-                                                     'health', 'absences', 'G1', 'G2'])
+                student_data = pd.DataFrame(input_data, columns=['age', 'absences', 'G2'])
 
                 prediction = model_tree.predict(student_data)[0]
                 actual_score_20 = prediction
@@ -62,10 +45,7 @@ def predict_performance(request):
                 return render(request, 'performance_index.html', {'actual_score_20':actual_score_20,'p_index': prediction,'model_used': 'decision tree'})
 
             elif selected_model == 'random_forest':
-                student_data = pd.DataFrame(input_data,
-                                            columns=['activities', 'paid', 'sex', 'age', 'address',
-                                                     'Medu', 'Fedu', 'studytime', 'failures', 'higher', 'internet',
-                                                     'health', 'absences', 'G1', 'G2'])
+                student_data = pd.DataFrame(input_data, columns=['age', 'absences', 'G2'])
 
                 prediction = model_forest.predict(student_data)[0]
                 actual_score_20 = prediction
@@ -73,10 +53,7 @@ def predict_performance(request):
                 return render(request, 'performance_index.html', {'actual_score_20':actual_score_20,'p_index': prediction,'model_used': 'random forest'})
 
             elif selected_model == 'svm':
-                student_data = pd.DataFrame(input_data,
-                                            columns=['activities', 'paid', 'sex', 'age', 'address',
-                                                     'Medu', 'Fedu', 'studytime', 'failures', 'higher', 'internet',
-                                                     'health', 'absences', 'G1', 'G2'])
+                student_data = pd.DataFrame(input_data, columns=['age', 'absences', 'G2'])
 
                 prediction = model_svr.predict(student_data)[0]
                 actual_score_20 = prediction
